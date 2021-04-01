@@ -1,0 +1,15 @@
+"ColorPallet": 
+  - "#F67280" #top bar
+  - "#F8B195" #side bar
+  - "#355C7D" #content pane
+  - "#F67280" #default message board color
+  - "red" #emergency message board color
+"RefocusOnCopy": True
+
+#Default is:
+#  - "#F67280" #top bar
+#  - "#F8B195" #side bar
+#  - "#355C7D" #content pane
+#  - "#F67280" #default message board color
+#  - "red" #emergency message board color
+#"RefocusOnCopy": False

@@ -20,21 +20,25 @@ class Text:
 
         return NewText
 
-    def GetFlippedText(self) -> str:
-        Flipped = list("ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz") #taken from https://qwerty.dev/upside-down-text-generator/
+    def GetFlippedText(self) -> str: #https://qwerty.dev/upside-down-text-generator/
+        Flipped = list("ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz") 
         return "".join(list(reversed(self.MatchTextToArrays(Flipped))))
 
-    def GetEmojiedText(self) -> str:
+    def GetEmojiedText(self) -> str: 
         EmojiText = list("🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿".replace(" ", ""))
         return "‎".join(self.MatchTextToArrays(EmojiText))
 
-    def GetHackermanText(self) -> str:
+    def GetHackermanText(self) -> str: #https://lingojam.com/GlitchTextGenerator
         HackmanText = "a̶̢̦̮̼͉͑̏̄̍̐̓͝ b̸̫̖̳̯̼̰̣͒̅͆ c̴͕̺̩͗̃̈́̆̊̆̕͘̕͜ͅ ḋ̴̘͆̑̂͘͝ e̶̛͈͓͍̗̬͐̀̾̉̋͜ f̶͊̌̽̓̇̋̃̾̆̈́ͅ g̸̨̠̪̏́̅͆͊͗ h̸̢̥̱̮͍̱̝̺͐ i̵̝͇͊̉̀ ǰ̴̡̳̥̰͇̺͙̲̀͝ͅ k̶̨̟̭͚̮̥͆̀̑͋͑̓̒̑̋̉ l̵̜̭̤̼̠͛̀̇ m̶̹͍̹̥̺̰̊͆̉̋͒͌ n̴͇͈͙̥̻̟̺̿͗̓̐ ö̶̮̜́̑͌͘͘ p̶̤̯̟̀͐͋̆̀̄̈̚͜͝ q̵̢̛̖͈̹̮̰̲̹͖̦͊͋̌͝ r̴̖̻̅̓̄̆ s̴̹͈͎̝̐̀̑̍ ţ̴̟͖̖͍̓͑̕ u̵̢̖̟̭̪͆͆͆̐͑̊̋ v̵̡̢̢͈̮̗̳̮̱̄̊̔͌́́͗̎͜ w̸̭̪̳̗̳͖̲͑̄͊̋͜ x̸̟͗̑͊̈́̊̔͗̀̍͝ y̶̥̣̥̘͇̹̙̕͝ z̵̗̙̙͌͌̾̏̏̋̕̚͝".split(" ")
         return "‎".join(self.MatchTextToArrays(HackmanText))
 
     def GetFancyAssText(self) -> str:
         FancyFont = list("𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫")
         return "‎".join(self.MatchTextToArrays(FancyFont))
+
+    def GetStruckThroughText(self) -> str: #https://saijogeorge.com/strikethrough-text-generator/
+        StruckFont = "a̶ b̶ c̶ d̶ e̶ f̶ g̶ h̶ i̶ j̶ k̶ l̶ m̶ n̶ o̶ p̶ q̶ r̶ s̶ t̶ u̶ v̶ w̶ x̶ y̶ z̶".split(" ")
+        return "‎".join(self.MatchTextToArrays(StruckFont))
 
 
     def GetSpacedText(self) -> str:
