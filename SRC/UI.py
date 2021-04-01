@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import colorchooser
 import os
 
 #files
@@ -17,11 +18,14 @@ class App:
         self.Height = Height
 
         #default settings values
-        self.BGColor = "#355C7D"
-        self.TopBarColor = "#F67280"
-        self.SideBarColor = "#F8B195"
-        self.EmergencyMessageColor = "red"
-        self.DefaultMessageColor = self.TopBarColor
+        self.ColorArray = [
+            "#F67280",
+            "#F8B195",
+            "#355C7D",
+            "#F67280",
+            "red"
+        ]
+
         self.RefocusOnCopy = False
 
         self.SetUpData()
@@ -43,14 +47,10 @@ class App:
         print(Data)
 
         if Data is None:
-            self.ShowMessage("Failed To Load Settings", 1000, self.EmergencyMessageColor)
+            self.ShowMessage("Failed To Load Settings", 1000, self.ColorArray[4])
             return
 
-        self.TopBarColor = Data["ColorPallet"][0]
-        self.SideBarColor = Data["ColorPallet"][1]
-        self.BGColor = Data["ColorPallet"][2]
-        self.DefaultMessageColor = Data["ColorPallet"][3]
-        self.EmergencyMessageColor = Data["ColorPallet"][4]
+        self.ColorArray = Data["ColorPallet"]
 
         self.RefocusOnCopy = Data["RefocusOnCopy"]
 
@@ -63,36 +63,35 @@ class App:
         window.title(VersionInfo)
         window.resizable(False, False)
 
-        self.SideBar = tk.Frame(width=52, height=self.Height, bg=self.SideBarColor)
+        self.SideBar = tk.Frame(width=52, height=self.Height)
         self.SideBar.place(x = 0, y = 0, anchor = "nw")
 
-        self.TopBar = tk.Frame(width=self.Width, height=50, bg=self.TopBarColor)
+        self.TopBar = tk.Frame(width=self.Width, height=50)
         self.TopBar.place(x = 0, y = 0, anchor = "nw")
 
         #content
-        self.ContentPane = tk.Frame(width=self.Width-52, height=self.Height-50, bg=self.BGColor)
+        self.ContentPane = tk.Frame(width=self.Width-52, height=self.Height-50)
         self.ContentPane.place(x = 52, y = 50, anchor = "nw")
+
+        self.RefreshBackgroundColors()
 
         self.MakeButtonUI()
 
-        self.StuffToRemoveLaterettings = tk.Button(image = self.SettingsImage, highlightbackground=self.BGColor, command=self.MakeSettings)
+        self.StuffToRemoveLaterettings = tk.Button(image = self.SettingsImage, highlightbackground=self.ColorArray[2], command=self.MakeSettings)
         self.StuffToRemoveLaterettings.place(x = 0, rely = 1, anchor = 'sw')
 
-        self.ShowTextOptions = tk.Button(image = self.SelectionTextImage, highlightbackground=self.BGColor, command=self.MakeButtonUI)
+        self.ShowTextOptions = tk.Button(image = self.SelectionTextImage, highlightbackground=self.ColorArray[2], command=self.MakeButtonUI)
         self.ShowTextOptions.place(x = 0, y = 50, anchor = 'nw')
 
-        self.ShowEmojiOptions = tk.Button(image = self.SelectionEmojiTextImage, highlightbackground=self.BGColor, command=self.MakeButtonEmojiText)
+        self.ShowEmojiOptions = tk.Button(image = self.SelectionEmojiTextImage, highlightbackground=self.ColorArray[2], command=self.MakeButtonEmojiText)
         self.ShowEmojiOptions.place(x = 0, y = 100, anchor = 'nw')
 
     def ClipboardEventListener(self, LastText):
 
-        if not self.RefocusOnCopy:
-            return
-
         CurrentCopy = ClipboardHandler.GetText()
 
-        if CurrentCopy != LastText:
-            print("Update Text")
+        if self.RefocusOnCopy and CurrentCopy != LastText:
+            self.ShowMessage("Detected New Clipboard!", 1000)
             self.MakeButtonUI()
             self.window.focus_force()
         
@@ -107,19 +106,19 @@ class App:
 
         self.ClearButtons()
 
-        CurrentText = tk.Label(text=TextObject.GetString(), font=("Helvetica", 25), bg=self.TopBarColor, foreground="white")
+        CurrentText = tk.Label(text=TextObject.GetString(), font=("Helvetica", 25), bg=self.ColorArray[0], foreground="white")
         CurrentText.place(relx = 0.5, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(CurrentText)
 
         for i in range(len(ListOfTexts)):
 
-            ButtonsTemp = tk.Button(text=ListOfButtonNames[i], font=("Helvetica", 15), foreground="black", command = lambda i=i: [ClipboardHandler.Copy(ListOfTexts[i]), self.ShowMessage(f"Message copied successfully!", 1000)], highlightbackground=self.BGColor)
-            ButtonsTemp.place(relx = 0.5, y = 25 * i + 75, anchor = 'center')
+            ButtonsTemp = tk.Button(text=ListOfButtonNames[i], font=("Helvetica", 15), foreground="black", command = lambda i=i: [ClipboardHandler.Copy(ListOfTexts[i]), self.ShowMessage(f"Message copied successfully!", 1000)], highlightbackground=self.ColorArray[2], width=25)
+            ButtonsTemp.place(x = (self.Width + 54)//2, y = 55 + i * 20, anchor="n")
             self.StuffToRemoveLater.append(ButtonsTemp)
 
         #last
 
-        ButtonRefresh = tk.Button(image = self.RefreshImage, highlightbackground=self.BGColor)
+        ButtonRefresh = tk.Button(image = self.RefreshImage, highlightbackground=self.ColorArray[2])
         ButtonRefresh.place(relx = 0, y = 0, anchor = 'nw')
         self.StuffToRemoveLater.append(ButtonRefresh)
         ButtonRefresh["command"] = lambda: [self.MakeButtonUI(), self.ShowMessage(f"Force Refreshed Clipboard!", 1000)]
@@ -135,18 +134,18 @@ class App:
 
         self.ClearButtons()
 
-        TopText = tk.Label(text="Text Emojis", font=("Helvetica", 25), bg=self.TopBarColor, foreground="white")
+        TopText = tk.Label(text="Text Emojis", font=("Helvetica", 25), bg=self.ColorArray[0], foreground="white")
         TopText.place(relx = 0.5, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(TopText)
 
-        TextBox = tk.Listbox(highlightbackground = self.BGColor, bg=self.BGColor, foreground="white", borderwidth = 0, highlightthickness = 0)
+        TextBox = tk.Listbox(highlightbackground = self.ColorArray[2], bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
         TextBox.place(x = 52, y = 50, anchor = "nw", width = self.Width, height=250)
         self.StuffToRemoveLater.append(TextBox)
 
         Emoticons = EmoticonsHandler.GetEmoticons()
 
         if Emoticons is None:
-            self.ShowMessage("Failed To Load Emoticons", 1000, self.EmergencyMessageColor)
+            self.ShowMessage("Failed To Load Emoticons", 1000, self.ColorArray[4])
 
             self.MakeButtonUI()
 
@@ -164,22 +163,71 @@ class App:
 
         self.SetUpData()
 
-        TopText = tk.Label(text="Settings", font=("Helvetica", 25), bg=self.TopBarColor, foreground="white")
+        TopText = tk.Label(text="Settings", font=("Helvetica", 25), bg=self.ColorArray[0], foreground="white")
         TopText.place(relx = 0.5, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(TopText)
 
         def SetRefocusOnCopy(Checked):
-            SettingsHandler.Write("RefocusOnCopy", self.RefocusOnCopy, FilePath)
             self.RefocusOnCopy = Checked 
+            if SettingsHandler.Write("RefocusOnCopy", self.RefocusOnCopy, FilePath):
+                self.ShowMessage("Successfully Saved Setting", 1000)
+            else:
+                self.ShowMessage("Unable to Save Setting", 1000, self.ColorArray[4])
 
         IsChecked = tk.IntVar(value = int(self.RefocusOnCopy))
-        Checkbox = tk.Checkbutton(text="Refocus On Copy?", variable = IsChecked, command = lambda: [SetRefocusOnCopy(bool(IsChecked.get()))])
-        Checkbox.place(x = 50, y = 50, anchor = "nw")
+        Checkbox = tk.Checkbutton(text="Refocus On Copy?", bg=self.ColorArray[2], foreground="white", highlightbackground=self.ColorArray[2], variable = IsChecked, command = lambda: [SetRefocusOnCopy(bool(IsChecked.get()))])
+        Checkbox.place(x = (self.Width + 54)//2, y = 50, anchor="n")
+        self.StuffToRemoveLater.append(Checkbox)
+
+        Data = SettingsHandler.GetAllData(FilePath)
+
+        def SetColors(Color, Index):
+
+            if Color is None:
+                return
+
+            self.ColorArray[Index] = Color
+
+            if SettingsHandler.Write("ColorPallet", Color, FilePath, True, Index):
+                self.ShowMessage("Successfully Saved Setting", 1000)
+                self.RefreshBackgroundColors()
+                self.MakeSettings() #refresh
+            else:
+                self.ShowMessage("Unable to Save Setting", 1000, self.ColorArray[4])
+
+        i = 0
+
+        for i in range(len(Data["ColorPallet"])):
+            Tempbutton = tk.Button(text="Change "+Data["ColorPalletKey"][i], highlightbackground=Data["ColorPallet"][i], width = 25)
+            self.StuffToRemoveLater.append(Tempbutton)
+            Tempbutton.place(x = (self.Width + 54)//2, y = 80 + i * 20, anchor="n")
+            Tempbutton.configure(command = lambda i=i : [SetColors(colorchooser.askcolor(self.ColorArray[i])[1], i)])
+        
+        i += 1
+
+        def ResetColorsOfTheme():
+            self.ColorArray = Data["ColorPalletDefault"]
+            if SettingsHandler.Write("ColorPallet", self.ColorArray, FilePath):
+                self.ShowMessage("Successfully Saved Setting", 1000)
+                self.RefreshBackgroundColors()
+                self.MakeSettings() #refresh
+            else:
+                self.ShowMessage("Unable to Save Setting", 1000, self.ColorArray[4])
+
+        ResetColors = tk.Button(text="Reset Theme Colors", highlightbackground = self.ColorArray[2], width = 25)
+        ResetColors.place(x = (self.Width + 54)//2, y = 90 + i * 20, anchor="n")
+        ResetColors.configure(command = lambda i=i : [ResetColorsOfTheme()])
+        self.StuffToRemoveLater.append(ResetColors)
+
+    def RefreshBackgroundColors(self):
+        self.TopBar.config(bg=self.ColorArray[0])
+        self.SideBar.config(bg=self.ColorArray[1])
+        self.ContentPane.config(bg=self.ColorArray[2])
 
     def ShowMessage(self, Message, Length, Color = ""):
 
         if Color == "":
-            Color = self.DefaultMessageColor
+            Color = self.ColorArray[3]
         
         DisplayBar = tk.Frame(width=self.Width, height=50, bg=Color)
         DisplayBar.place(relx = 0, rely = 0.9)

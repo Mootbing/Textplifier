@@ -1,0 +1,13 @@
+ColorPallet:
+- '#F67280'
+- '#F8B195'
+- '#355C7D'
+- '#F67280'
+- red
+ColorPalletKey:
+- top bar color
+- side bar color
+- content pane color
+- default message color
+- emergency message color
+RefocusOnCopy: true

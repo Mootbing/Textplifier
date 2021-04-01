@@ -9,27 +9,27 @@ def GetAllData(Path) -> dict:
 
             Data = yaml.safe_load(f)
 
-            ReturnMap = {}
-
-            ReturnMap["ColorPallet"] = Data["ColorPallet"]
-
-            ReturnMap["RefocusOnCopy"] = Data["RefocusOnCopy"]
-
-        return ReturnMap
+        return Data
 
     except Exception as e:
         print(e)
         return None
 
-def Write(Key, Info, Path) -> bool:
+def Write(Key, Info, Path, IsArray = False, Index = 0) -> bool:
     try:
-        with open(Path + "/Settings.yaml", "w") as f:
+        with open(Path + "/Settings.yaml", "r") as f:
             
             Data = yaml.safe_load(f)
 
-            Data[Key] = Info
+            if not IsArray:
+                Data[Key] = Info
+            else:
+                Data[Key][Index] = Info
 
-            Dumped = yaml.dump(Data, f)
+            print(Data)
+
+            with open(Path + "/Settings.yaml", "w") as f:
+                Dumped = yaml.dump(Data, f)
 
             return True
 
