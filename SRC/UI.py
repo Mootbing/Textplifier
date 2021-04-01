@@ -110,11 +110,14 @@ class App:
         CurrentText.place(relx = 0.5, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(CurrentText)
 
-        for i in range(len(ListOfTexts)):
+        ListOfTextFeatures = tk.Listbox(highlightbackground = self.ColorArray[2], bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
+        ListOfTextFeatures.place(x = 52, y = 50, anchor = "nw", width = self.Width, height=250)
+        self.StuffToRemoveLater.append(ListOfTextFeatures)
 
-            ButtonsTemp = tk.Button(text=ListOfButtonNames[i], font=("Helvetica", 15), foreground="black", command = lambda i=i: [ClipboardHandler.Copy(ListOfTexts[i]), self.ShowMessage(f"Message copied successfully!", 1000)], highlightbackground=self.ColorArray[2], width=25)
-            ButtonsTemp.place(x = (self.Width + 54)//2, y = 55 + i * 20, anchor="n")
-            self.StuffToRemoveLater.append(ButtonsTemp)
+        for i in range(len(ListOfTexts)):
+            ListOfTextFeatures.insert(i, ListOfButtonNames[i])
+            ListOfTextFeatures.bind('<Double-1>', lambda x: [self.ShowMessage(f"Message copied successfully!", 1000), ClipboardHandler.Copy(String = str(ListOfTexts[int(ListOfTextFeatures.curselection()[0])]))])  
+
 
         #last
 
