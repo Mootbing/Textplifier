@@ -71,7 +71,9 @@ class App:
         self.window.title(VersionInfo)
         self.window.resizable(False, False)
 
-        self.window.iconbitmap(FilePath + "/Images/TextAmplifier.ico")
+        Icon = tk.PhotoImage(file=FilePath + "/Images/TextAmplifier.png")
+
+        self.window.iconbitmap(FilePath + "/TextAmplifier.ico")
         self.window.tk.call('wm', 'iconphoto', self.window._w, Icon)
         self.window.iconphoto(False, Icon)
 
