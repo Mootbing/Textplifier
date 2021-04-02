@@ -3,7 +3,13 @@ class Text:
     Regular = list("abcdefghijklmnopqrstuvwxyz")
 
     def __init__(self, String):
-        self.TextString = String
+
+        self.TextString = "Nothing Copyied"
+
+        if self.TextString is not None:
+            self.TextString = String
+
+        print(self.TextString)
 
     def GetString(self) -> str:
         return self.TextString
