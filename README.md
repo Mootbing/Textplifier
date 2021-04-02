@@ -7,4 +7,4 @@ Amplifier for texting and sms
 
 ## How to use?
 
-
+![Here is a step by step guide and walkthrough of all the features]("https://mootbing.github.io/Textplifier/SRC/Help/Help.html")
