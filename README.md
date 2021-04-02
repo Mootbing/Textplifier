@@ -1,5 +1,5 @@
 # Textplifier
-Amplifier for texting and sms
+Amplifier for text. Make cool effects with copy and paste!
 
 ## Demo
 
