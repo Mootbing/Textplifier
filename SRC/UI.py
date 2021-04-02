@@ -114,10 +114,11 @@ class App:
 
         CurrentCopy = ClipboardHandler.GetText()
 
-        if self.RefocusOnCopy and CurrentCopy != LastText:
+        if CurrentCopy != LastText:
             self.ShowMessage("Detected New Clipboard!", 1000)
             self.MakeButtonUI()
-            self.window.focus_force()
+            if self.RefocusOnCopy:
+                self.window.focus_force()
         
         self.window.after(1000, lambda: [self.ClipboardEventListener(CurrentCopy)])
 
