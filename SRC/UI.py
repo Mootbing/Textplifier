@@ -66,10 +66,14 @@ class App:
 
         VersionInfo = "Textplifier v0.1"
 
-        window.geometry(f"{self.Width}x{self.Height}")
+        self.window.geometry(f"{self.Width}x{self.Height}")
         
-        window.title(VersionInfo)
-        window.resizable(False, False)
+        self.window.title(VersionInfo)
+        self.window.resizable(False, False)
+
+        self.window.iconbitmap(FilePath + "/Images/TextAmplifier.ico")
+        self.window.tk.call('wm', 'iconphoto', self.window._w, Icon)
+        self.window.iconphoto(False, Icon)
 
         self.SideBar = tk.Frame(width=52, height=self.Height)
         self.SideBar.place(x = 0, y = 0, anchor = "nw")
