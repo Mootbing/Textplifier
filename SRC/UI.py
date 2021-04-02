@@ -2,12 +2,19 @@ import tkinter as tk
 from tkinter import colorchooser
 import os
 import webbrowser
+import sys
 
 #files
 from Handlers import ClipboardHandler, SettingsHandler, EmoticonsHandler
 from Classes import TextClass
 
-FilePath = os.path.dirname(os.path.abspath(__file__))
+FilePath = os.path.dirname(sys.argv[0])
+
+# thank you so much https://stackoverflow.com/questions/404744/determining-application-path-in-a-python-exe-generated-by-pyinstaller
+if getattr(sys, 'frozen', False):
+    FilePath = os.path.dirname(sys.executable)
+elif __file__:
+    FilePath = os.path.dirname(__file__)
 
 class App:
 

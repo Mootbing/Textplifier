@@ -1,5 +1,4 @@
 import yaml
-import os
 
 def GetAllData(Path) -> dict:
     try:
