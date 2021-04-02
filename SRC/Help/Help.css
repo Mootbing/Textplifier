@@ -1,0 +1,56 @@
+header {
+    padding: 50px;
+    text-align: center;
+    background: #85c16d;
+    color: white;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header p {
+    font-size: 20px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#HowToUseTitle {
+    padding: 15px;
+    text-align: center;
+    background: #fca972;
+    color: white;
+    font-size: 40px;
+}
+
+#Settings {
+    padding: 15px;
+    text-align: center;
+    background: #fca972;
+    color: white;
+    font-size: 40px;
+}
+
+#HowToUse{
+    text-align: center;
+    padding: 30px;
+    background: #0055c4;
+    color: white;
+    font-size: 24px;
+}
+
+#TextFX {
+    padding: 15px;
+    text-align: center;
+    background: #fca972;
+    color: white;
+    font-size: 40px;
+}
+
+#Emoticons {
+    padding: 15px;
+    text-align: center;
+    background: #fca972;
+    color: white;
+    font-size: 40px;
+}

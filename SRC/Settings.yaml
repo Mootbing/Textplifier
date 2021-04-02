@@ -15,5 +15,5 @@ ColorPalletKey:
 - Side Bar Color
 - Content Pane Color
 - Default Message Color
-- Emergency Message Color
-RefocusOnCopy: true
+- Error Message Color
+RefocusOnCopy: false

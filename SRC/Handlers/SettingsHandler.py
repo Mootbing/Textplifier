@@ -4,9 +4,6 @@ import os
 def GetAllData(Path) -> dict:
     try:
         with open(Path + "/Settings.yaml") as f:
-            
-            print(Path + "/Settings.yaml")
-
             Data = yaml.safe_load(f)
 
         return Data
@@ -18,15 +15,12 @@ def GetAllData(Path) -> dict:
 def Write(Key, Info, Path, IsArray = False, Index = 0) -> bool:
     try:
         with open(Path + "/Settings.yaml", "r") as f:
-            
             Data = yaml.safe_load(f)
 
             if not IsArray:
                 Data[Key] = Info
             else:
                 Data[Key][Index] = Info
-
-            print(Data)
 
             with open(Path + "/Settings.yaml", "w") as f:
                 Dumped = yaml.dump(Data, f)

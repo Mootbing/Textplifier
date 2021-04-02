@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import colorchooser
 import os
+import webbrowser
 
 #files
 from Handlers import ClipboardHandler, SettingsHandler, EmoticonsHandler
@@ -36,15 +37,22 @@ class App:
         self.SettingsImage = tk.PhotoImage(file = FilePath + "/Images/Settings.png").subsample(2, 2)
         self.SelectionTextImage = tk.PhotoImage(file = FilePath + "/Images/SelectTextPanel.png").subsample(2, 2)
         self.SelectionEmojiTextImage = tk.PhotoImage(file = FilePath + "/Images/TextMojis.png").subsample(2, 2)
+        self.SelectHelpTextImage = tk.PhotoImage(file = FilePath + "/Images/Info.png").subsample(2, 2)
 
         self.SetUpUI()
 
-        self.ClipboardEventListener("")
+        self.Emoticons = EmoticonsHandler.GetEmoticons()
+
+        if self.Emoticons is None:
+            self.ShowMessage("Failed To Load Emoticons", 1000, self.ColorArray[4])
+            self.MakeButtonUI()
+            return
+
+        self.ClipboardEventListener(ClipboardHandler.GetText())
 
     def SetUpData(self):
 
         Data = SettingsHandler.GetAllData(FilePath)
-        print(Data)
 
         if Data is None:
             self.ShowMessage("Failed To Load Settings", 1000, self.ColorArray[4])
@@ -86,6 +94,9 @@ class App:
         self.ShowEmojiOptions = tk.Button(image = self.SelectionEmojiTextImage, highlightbackground=self.ColorArray[2], command=self.MakeButtonEmojiText)
         self.ShowEmojiOptions.place(x = 0, y = 100, anchor = 'nw')
 
+        self.ShowHelp = tk.Button(image = self.SelectHelpTextImage, highlightbackground=self.ColorArray[2], command=lambda: [print(FilePath + "/Help.html"), webbrowser.open("file://" + FilePath + "/Help/Help.html")])
+        self.ShowHelp.place(x = 0, y = self.Height - 50, anchor = 'sw')
+
     def ClipboardEventListener(self, LastText):
 
         CurrentCopy = ClipboardHandler.GetText()
@@ -107,20 +118,18 @@ class App:
         self.ClearButtons()
 
         CurrentText = tk.Label(text=TextObject.GetString(), font=("Helvetica", 25), bg=self.ColorArray[0], foreground="white")
-        CurrentText.place(relx = 0.5, y = 25, anchor = 'center')
+        CurrentText.place(x = (self.Width + 50)//2, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(CurrentText)
 
-        ListOfTextFeatures = tk.Listbox(highlightbackground = self.ColorArray[2], bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
-        ListOfTextFeatures.place(x = 52, y = 50, anchor = "nw", width = self.Width, height=250)
+        ListOfTextFeatures = tk.Listbox(font=("Helvetica", 18), justify=tk.CENTER, highlightbackground = self.ColorArray[2], bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
+        ListOfTextFeatures.place(x = 52, y = 50, anchor = "nw", width = self.Width-50, height=self.Height - 50)
         self.StuffToRemoveLater.append(ListOfTextFeatures)
 
         for i in range(len(ListOfTexts)):
             ListOfTextFeatures.insert(i, ListOfButtonNames[i])
             ListOfTextFeatures.bind('<Double-1>', lambda x: [self.ShowMessage(f"Message copied successfully!", 1000), ClipboardHandler.Copy(String = str(ListOfTexts[int(ListOfTextFeatures.curselection()[0])]))])  
 
-
         #last
-
         ButtonRefresh = tk.Button(image = self.RefreshImage, highlightbackground=self.ColorArray[2])
         ButtonRefresh.place(relx = 0, y = 0, anchor = 'nw')
         self.StuffToRemoveLater.append(ButtonRefresh)
@@ -141,22 +150,12 @@ class App:
         TopText.place(relx = 0.5, y = 25, anchor = 'center')
         self.StuffToRemoveLater.append(TopText)
 
-        TextBox = tk.Listbox(highlightbackground = self.ColorArray[2], bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
-        TextBox.place(x = 52, y = 50, anchor = "nw", width = self.Width, height=250)
+        TextBox = tk.Listbox(font=("Helvetica", 18), highlightbackground = self.ColorArray[2], justify=tk.CENTER, bg=self.ColorArray[2], foreground="white", borderwidth = 0, highlightthickness = 0)
+        TextBox.place(x = 52, y = 50, anchor = "nw", width = self.Width - 50, height=250)
         self.StuffToRemoveLater.append(TextBox)
 
-        Emoticons = EmoticonsHandler.GetEmoticons()
-
-        if Emoticons is None:
-            self.ShowMessage("Failed To Load Emoticons", 1000, self.ColorArray[4])
-
-            self.MakeButtonUI()
-
-            return
-
-        for i in range(len(Emoticons)):
-
-            TextBox.insert(i, Emoticons[i])
+        for i in range(len(self.Emoticons)):
+            TextBox.insert(i, self.Emoticons[i])
 
             TextBox.bind('<Double-1>', lambda x: [ClipboardHandler.Copy(str(TextBox.get(TextBox.curselection()))), self.ShowMessage("Emoticon Copied Successfully!", 1000)])
 
